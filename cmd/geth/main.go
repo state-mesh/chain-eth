@@ -157,8 +157,6 @@ var (
 		utils.MinerNotifyFullFlag,
 		configFileFlag,
 		utils.CatalystFlag,
-		utils.EWASMInterpreterFlag,
-		utils.EVMInterpreterFlag,
 	}
 
 	rpcFlags = []cli.Flag{

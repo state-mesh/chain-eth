@@ -130,7 +130,6 @@ type EVM struct {
 	// available gas is calculated in gasCall* according to the 63/64 rule and later
 	// applied in opCall*.
 	callGasTemp uint64
-	meterGas    bool
 }
 
 // NewEVM returns a new EVM. The returned EVM is not thread safe and should
@@ -143,7 +142,6 @@ func NewEVM(blockCtx BlockContext, txCtx TxContext, statedb StateDB, chainConfig
 		Config:      config,
 		chainConfig: chainConfig,
 		chainRules:  chainConfig.Rules(blockCtx.BlockNumber),
-		meterGas:    true,
 	}
 	evm.interpreter = NewEVMInterpreter(evm)
 	return evm
@@ -536,14 +534,6 @@ func (evm *EVM) Create2(caller ContractRef, code []byte, gas uint64, endowment *
 
 // ChainConfig returns the environment's chain configuration
 func (evm *EVM) ChainConfig() *params.ChainConfig { return evm.chainConfig }
-
-func (evm *EVM) StopGasMetering() {
-	evm.meterGas = false
-}
-
-func (evm *EVM) StartGasMetering() {
-	evm.meterGas = true
-}
 
 func (evm *EVM) StopDebug() {
 	if evm.Config.Tracer != nil {

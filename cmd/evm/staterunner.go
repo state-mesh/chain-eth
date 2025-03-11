@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/cmd/utils"
 	"io/ioutil"
 	"os"
 
@@ -92,18 +91,9 @@ func stateTestCmd(ctx *cli.Context) error {
 	}
 	// Iterate over all the tests, run them and aggregate the results
 	cfg := vm.Config{
-		Tracer:           tracer,
-		Debug:            ctx.GlobalBool(DebugFlag.Name) || ctx.GlobalBool(MachineFlag.Name),
-		EVMInterpreter:   ctx.String(utils.EVMInterpreterFlag.Name),
-		EWASMInterpreter: ctx.String(utils.EWASMInterpreterFlag.Name),
+		Tracer: tracer,
+		Debug:  ctx.GlobalBool(DebugFlag.Name) || ctx.GlobalBool(MachineFlag.Name),
 	}
-	if cfg.EVMInterpreter != "" {
-		vm.InitEVMCEVM(cfg.EVMInterpreter)
-	}
-	if cfg.EWASMInterpreter != "" {
-		vm.InitEVMCEwasm(cfg.EWASMInterpreter)
-	}
-
 	results := make([]StatetestResult, 0, len(tests))
 	for key, test := range tests {
 		for _, st := range test.Subtests() {

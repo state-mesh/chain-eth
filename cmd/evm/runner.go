@@ -212,14 +212,9 @@ func runCmd(ctx *cli.Context) error {
 		Coinbase:    genesisConfig.Coinbase,
 		BlockNumber: new(big.Int).SetUint64(genesisConfig.Number),
 		EVMConfig: vm.Config{
-			Tracer:         tracer,
-			Debug:          ctx.GlobalBool(DebugFlag.Name) || ctx.GlobalBool(MachineFlag.Name),
-			EVMInterpreter: ctx.String(utils.EVMInterpreterFlag.Name),
+			Tracer: tracer,
+			Debug:  ctx.GlobalBool(DebugFlag.Name) || ctx.GlobalBool(MachineFlag.Name),
 		},
-	}
-
-	if runtimeConfig.EVMConfig.EVMInterpreter != "" {
-		vm.InitEVMCEVM(runtimeConfig.EVMConfig.EVMInterpreter)
 	}
 
 	if cpuProfilePath := ctx.GlobalString(CPUProfileFlag.Name); cpuProfilePath != "" {

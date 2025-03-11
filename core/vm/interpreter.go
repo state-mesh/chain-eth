@@ -205,7 +205,7 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 		} else if sLen > operation.maxStack {
 			return nil, &ErrStackOverflow{stackLen: sLen, limit: operation.maxStack}
 		}
-		if in.evm.meterGas && !contract.UseGas(cost) {
+		if !contract.UseGas(cost) {
 			return nil, ErrOutOfGas
 		}
 		if operation.dynamicGas != nil {
@@ -226,7 +226,7 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 					return nil, ErrGasUintOverflow
 				}
 			}
-			if in.evm.meterGas {
+			if operation.dynamicGas != nil {
 				// Consume the gas and return an error if not enough gas is available.
 				// cost is explicitly set so that the capture state defer method can get the proper cost
 				var dynamicCost uint64

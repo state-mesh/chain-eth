@@ -20,10 +20,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/ethereum/go-ethereum/core/vm"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -36,25 +34,8 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 )
 
-var (
-	// The API of this value => filepath<str/ing>,capabilities<k=v>,...
-	testEVM   = flag.String("evmc.evm", "", "EVMC EVM1 configuration")
-	testEWASM = flag.String("evmc.ewasm", "", "EVMC EWASM configuration")
-)
-
 func TestMain(m *testing.M) {
 	flag.Parse()
-
-	if *testEVM != "" {
-		log.Printf("Running tests with %s=%s", "evmc.evm", *testEVM)
-		vm.InitEVMCEVM(*testEVM)
-	}
-
-	if *testEWASM != "" {
-		log.Printf("Running tests with %s=%s", "evmc.ewasm", *testEWASM)
-		vm.InitEVMCEwasm(*testEWASM)
-	}
-
 	os.Exit(m.Run())
 }
 
